@@ -191,17 +191,21 @@ var dragTaskHandler = function(event) {
     var taskId = event.target.getAttribute("data-task-id");
     event.dataTransfer.setData("text/plain", taskId);
     var getId = event.dataTransfer.getData("text/plain");
-    console.log("getId:", getId, typeof getId);
+    // console.log("getId:", getId, typeof getId);
 };
 
 pageContentEl.addEventListener("dragstart", dragTaskHandler);
 
 var dropZoneDragHandler = function(event) {
     var taskListEl = event.target.closest(".task-list");
+    
     if (taskListEl) {
+        taskListEl.setAttribute("style", "background: rgba(68, 233, 255, 0.7); border-style: dashed;");
         event.preventDefault();
     };
+    
     event.preventDefault();
+    
     event.target.closest(".task-list");
 };
 
@@ -224,7 +228,21 @@ var dropTaskHandler = function(event) {
         statusSelectEl.selectedIndex = 2;
     };
 
+    dropZoneEl.removeAttribute("style");
+
     dropZoneEl.appendChild(draggableElement);
 };
 
 pageContentEl.addEventListener("drop", dropTaskHandler);
+
+var dragLeaveHandler = function(event) {
+    var taskListEl = event.target.closest(".task-list");
+    
+    if (taskListEl) {
+        taskListEl.removeAttribute("style");
+    };
+    
+    event.target.closest(".task-list");
+};
+
+pageContentEl.addEventListener("dragleave", dragLeaveHandler);
