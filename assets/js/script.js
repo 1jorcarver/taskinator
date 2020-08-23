@@ -181,8 +181,6 @@ var deleteTask = function(taskId) {
 };
 
 var editTask = function(taskId) {
-    console.log("editing task #" + taskId);
-
     // get task list item element
     var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
 
@@ -233,7 +231,6 @@ var dragTaskHandler = function(event) {
     var taskId = event.target.getAttribute("data-task-id");
     event.dataTransfer.setData("text/plain", taskId);
     var getId = event.dataTransfer.getData("text/plain");
-    // console.log("getId:", getId, typeof getId);
 };
 
 pageContentEl.addEventListener("dragstart", dragTaskHandler);
@@ -298,6 +295,23 @@ var dragLeaveHandler = function(event) {
 
 var saveTasks = function() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
+};
+
+var loadTasks = function() {
+    tasks = localStorage.getItem("tasks");
+
+    if (!tasks) {
+        tasks = [];
+        return false;
+    }
+
+    savedTasks = JSON.parse(savedTasks);
+
+    // loop through savedTasks array
+    for (var i = 0; i < savedTasks.length; i++) {
+        // pass each task object into the createTaskEl() function
+        createTaskEl(savedTasks[i]);
+    }
 };
 
 pageContentEl.addEventListener("dragleave", dragLeaveHandler);
